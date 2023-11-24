@@ -10,6 +10,18 @@ function App() {
 {
   // counter = counter + 1;
   setCounter(counter + 1)
+
+  //this will increase only one at a time - we are repeating the same task
+  // setCounter(counter + 1)
+  // setCounter(counter + 1)
+  // setCounter(counter + 1)
+  // setCounter(counter + 1)
+
+  //these will increase 4 at a time - we are taking previous state
+  // setCounter(prevCounter => prevCounter + 1)
+  // setCounter(prevCounter => prevCounter + 1)
+  // setCounter(prevCounter => prevCounter + 1)
+  // setCounter(prevCounter => prevCounter + 1)
 }
 const removeValue = () =>
 {
