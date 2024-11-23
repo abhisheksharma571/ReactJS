@@ -77,7 +77,7 @@ export default function PostForm({ post }) {
                     label="Title :"
                     placeholder="Title"
                     className="mb-4"
-                    {...register("title", { required: true })}
+                    {...register("title", { required: true, maxLength: 155 })}
                 />
                 <Input
                     label="Slug :"
@@ -88,7 +88,7 @@ export default function PostForm({ post }) {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
                     }}
                 />
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} maxLength={5000} />
             </div>
             <div className="w-1/3 px-2">
                 <Input

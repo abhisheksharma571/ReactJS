@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function Header() {
-  const authStatus = useSelector((state) => state.auth.status);
+  const { status: authStatus, userData } = useSelector((state) => state.auth);
 
   const navItems = [
     {
@@ -23,8 +23,8 @@ function Header() {
       active: !authStatus,
     },
     {
-      name: "All Posts",
-      slug: "/all-posts",
+      name: "My Posts",
+      slug: "/my-posts",
       active: authStatus,
     },
     {
@@ -43,6 +43,11 @@ function Header() {
               <Logo width="45px" />
             </NavLink>
           </div>
+          {authStatus && (
+                <p className="font-semibold text-[#4fa87d] m-auto bg-white py-2 px-4 rounded-full">
+                   Welcome, {userData?.name || "User"}
+                </p>
+            )}
           <ul className="flex ml-auto">
             {navItems.map((item) =>
               item.active ? (
@@ -61,9 +66,9 @@ function Header() {
               ) : null
             )}
             {authStatus && (
-              <li>
-                <LogoutBtn />
-              </li>
+               <li>
+                 <LogoutBtn />
+               </li>
             )}
           </ul>
         </nav>
