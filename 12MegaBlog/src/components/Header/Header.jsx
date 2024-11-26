@@ -32,6 +32,11 @@ function Header() {
       slug: "/add-post",
       active: authStatus,
     },
+    {
+      name: "My Bookmarks",
+      slug: "/bookmarks",
+      active: authStatus,
+    }
   ];
 
   return (
@@ -43,9 +48,9 @@ function Header() {
               <Logo width="45px" />
             </NavLink>
           </div>
-          {authStatus && (
+          {authStatus && userData && (
                 <p className="font-semibold text-[#4fa87d] m-auto bg-white py-2 px-4 rounded-full">
-                   Welcome, {userData?.name || "User"}
+                   Welcome {userData?.name}
                 </p>
             )}
           <ul className="flex ml-auto">

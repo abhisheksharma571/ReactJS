@@ -15,6 +15,7 @@ import EditPost from "./pages/EditPost";
 
 import Post from "./pages/Post";
 import MyPosts from './pages/MyPosts.jsx'
+import MyBookmarks from './pages/MyBookmarks.jsx'
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,11 @@ const router = createBrowserRouter([
         {
             path: "/post/:slug",
             element: <Post />,
+        },
+        {
+            path: "/bookmarks",
+            element: <MyBookmarks />
+
         },
     ],
 },

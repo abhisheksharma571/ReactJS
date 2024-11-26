@@ -18,7 +18,7 @@ export class Service{
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteArticlesCollectionId,
                 slug,
                 {
                     title,
@@ -37,7 +37,7 @@ export class Service{
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteArticlesCollectionId,
                 slug,
                 {
                     title,
@@ -56,7 +56,7 @@ export class Service{
         try {
             await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteArticlesCollectionId,
                 slug
             
             )
@@ -71,7 +71,7 @@ export class Service{
         try {
             return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteArticlesCollectionId,
                 slug
             
             )
@@ -85,7 +85,7 @@ export class Service{
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                conf.appwriteCollectionId,
+                conf.appwriteArticlesCollectionId,
                 queries,
                 
 
@@ -130,6 +130,77 @@ export class Service{
             fileId
         )
     }
+
+    async addBookmark(postId, userId) {
+        try {
+            const response = await this.databases.createDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteBookmarksCollectionId,
+                ID.unique(),
+                {
+                    postId,
+                    userId,
+                    createdAt: new Date().toISOString(),
+                }
+            );
+            return response;
+        } catch (error) {
+            console.error("Error adding bookmark:", error);
+            throw error;
+        }
+    }
+
+    async removeBookmark(documentId) {
+        try {
+            console.log(`Attempting to remove bookmark with ID: ${documentId}`);
+            const response = await this.databases.deleteDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteBookmarksCollectionId,
+                documentId
+            );
+            console.log("Bookmark removed successfully:", response);
+            return response;
+        } catch (error) {
+            console.error(`Error removing bookmark with ID ${documentId}:`, error);
+            throw error;
+        }
+    }
+    
+
+    async isBookmarked(postId, userId) {
+        try {
+            const response = await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
+                conf.appwriteBookmarksCollectionId,
+                [
+                    Query.equal("postId", postId),
+                    Query.equal("userId", userId),
+                ]
+            );
+            return response.documents.length > 0 ? response.documents[0] : null;
+        } catch (error) {
+            console.error("Error checking bookmark:", error);
+            throw error;
+        }
+    }
+
+    async getBookmarksByUser(userId, postId) {
+        try {
+            const response = await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
+                conf.appwriteBookmarksCollectionId,
+                [
+                    Query.equal('userId', userId), // Match userId
+                    Query.equal('postId', postId), // Match postId
+                ]
+            );
+            return response.documents[0] || null; // Return the first matching document (or null if not found)
+        } catch (error) {
+            console.error("Error fetching bookmark:", error);
+            throw error; // Handle the error appropriately
+        }
+    } 
+
 }
 
 
